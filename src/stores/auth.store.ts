@@ -41,7 +41,14 @@ export const useAuthStore = defineStore('auth', {
 			return await service.register(userRegistry)
 		},
 		async me() {
-			return await service.userLogged()
+			try {
+				const response = await service.userLogged()
+				this.user = response.data
+
+				localStorage.setItem('userLogged', JSON.stringify(this.user))
+			} catch (error) {
+				console.log('error', error)
+			}
 		},
 		checkToken() {
 			return this.token !== null

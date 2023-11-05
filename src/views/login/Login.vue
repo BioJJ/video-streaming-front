@@ -61,6 +61,8 @@ export default defineComponent({
 			await this.store.login(this.dadosLogin)
 
 			if (this.store.getIsAuthenticated) {
+				await this.store.me()
+
 				this.$router.push({ name: 'Home' })
 			}
 		},
