@@ -119,7 +119,7 @@ export default defineComponent({
 	},
 	methods: {
 		async getVideos() {
-			await this.store.fetchAll(this.user.id)
+			await this.store.fetchAll(this.user.id as number)
 			this.videos = this.store.getVideosList
 			this.itemsPerPage = this.store.getTotalItens
 		},
