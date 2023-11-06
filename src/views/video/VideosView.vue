@@ -56,10 +56,10 @@
 							</v-col>
 							<v-col cols="12">
 								<iframe
+									title="Video url"
 									width="660"
 									height="415"
 									:src="videoUrl"
-									frameborder="0"
 									allowfullscreen
 								></iframe>
 							</v-col>

@@ -1,5 +1,5 @@
 <template>
-	<v-container id="chats" class="pa-6" fluid>
+	<v-container id="template" class="pa-6" fluid>
 		<delete-modal @delete="deleteClient" ref="DeleteModal" :table="'chat'" />
 
 		<v-row class="mb-3">
