@@ -1,5 +1,5 @@
 <template>
-	<v-container id="chats" class="pa-6" fluid>
+	<v-container id="template" class="pa-6" fluid>
 		<delete-modal @delete="deleteClient" ref="DeleteModal" :table="'chat'" />
 
 		<v-row class="mb-3">
@@ -119,7 +119,7 @@ export default defineComponent({
 	},
 	methods: {
 		async getVideos() {
-			await this.store.fetchAll(this.user.id)
+			await this.store.fetchAll(this.user.id as number)
 			this.videos = this.store.getVideosList
 			this.itemsPerPage = this.store.getTotalItens
 		},

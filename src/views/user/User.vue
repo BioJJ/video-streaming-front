@@ -22,7 +22,7 @@
 						<v-row class="pgc-form-row">
 							<v-col cols="2">
 								<v-text-field
-									v-model="video.id"
+									v-model="user.id"
 									label="ID"
 									readonly
 									dense
@@ -30,44 +30,29 @@
 							</v-col>
 							<v-col cols="10">
 								<v-text-field
-									v-model="video.title"
-									label="title"
-									readonly
-									dense
-								></v-text-field>
-							</v-col>
-							<v-col cols="8">
-								<v-text-field
-									v-model="video.videoId"
-									label="videoId"
-									readonly
-									dense
-								></v-text-field>
-							</v-col>
-
-							<v-col cols="4">
-								<v-text-field
-									v-if="video.user"
-									v-model="video.user.name"
-									readonly
-									label="UserName"
+									v-model="user.name"
+									label="name"
 									dense
 								></v-text-field>
 							</v-col>
 							<v-col cols="12">
-								<iframe
-									title="Video url"
-									width="660"
-									height="415"
-									:src="videoUrl"
-									allowfullscreen
-								></iframe>
+								<v-text-field
+									v-model="user.email"
+									label="email"
+									readonly
+									dense
+								></v-text-field>
 							</v-col>
 						</v-row>
 					</v-form>
-					<div class="d-flex justify-start mt-10">
-						<v-btn to="/videos" color="red" outlined class="ml-5 pgc-btn-form">
-							Voltar
+					<div class="d-flex justify-start mt-15">
+						<v-btn
+							@click="submitForm"
+							:loading="formLoading"
+							color="primary"
+							class="ml-5 pgc-btn-form"
+						>
+							<v-icon small class="mr-1">mdi-content-save</v-icon> Save
 						</v-btn>
 					</div>
 				</v-card>
@@ -80,33 +65,40 @@
 import { defineComponent } from 'vue'
 
 import { useToast } from 'vue-toastification'
-import { useVideoStore } from '../../stores/video.store'
-import { Video } from '../../models/Video'
+import { User } from '../../models/User'
+import { useAuthStore } from '../../stores/auth.store'
+import { useUserStore } from '../../stores/user.store'
 
 export default defineComponent({
-	name: 'VideosView',
+	// eslint-disable-next-line vue/multi-word-component-names
+	name: 'User',
 	data: () => ({
-		video: new Video(),
+		formLoading: false,
+		user: new User(),
 		toast: useToast(),
-		store: useVideoStore(),
-		videoUrl: null as unknown as string
+		store: useUserStore(),
+		storeAuth: useAuthStore()
 	}),
-
 	mounted(): void {
-		this.$route.params.id && this.getVideos()
+		this.user = this.storeAuth.getUser
 	},
 	methods: {
-		async getVideos() {
+		async submitForm(): Promise<void> {
+			this.formLoading = true
 			try {
-				this.video = await this.store.fetchById(this.$route.params.id)
+				await this.store.fetchUpdate(this.user)
+				this.toast.info('Updated successfully')
 
-				const responsePanda = await this.store.fetchUrlById(this.video.videoId)
+				this.formLoading = false
+				this.$router.push({ name: 'User' })
 
-				this.videoUrl = responsePanda.video_player as string
+				this.formLoading = false
 			} catch (error) {
-				this.toast.error('Client not found')
+				this.formLoading = false
 			}
 		}
 	}
 })
 </script>
+
+<style></style>
