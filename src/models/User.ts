@@ -1,13 +1,7 @@
-export class User {
-	id: number
-	name: string
-	email: string
-	password: string
+import { EntityBase } from '../services/generic.service'
 
-	constructor(id: number, email: string, password: string, name: string) {
-		this.id = id
-		this.email = email
-		this.password = password
-		this.name = name
-	}
+export class User extends EntityBase {
+	name?: string
+	email?: string
+	password?: string
 }

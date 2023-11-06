@@ -17,7 +17,7 @@ export default class GenericService<T extends EntityBase> {
 	}
 
 	update(item: T) {
-		return api.put<T>(`/${this.endpoint}/${item.id}`, item)
+		return api.patch<T>(`/${this.endpoint}/${item.id}`, item)
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
