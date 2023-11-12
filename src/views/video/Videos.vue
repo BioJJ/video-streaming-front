@@ -56,9 +56,9 @@
 					>
 						<template v-slot:item.actions="{ item }">
 							<table-action
-								@delete="deleteModal(item.columns.name, item.columns.id)"
+								@delete="deleteModal(item.title, item.id)"
 								route="videos"
-								:item="item.columns"
+								:item="item"
 							/>
 						</template>
 					</v-data-table>
