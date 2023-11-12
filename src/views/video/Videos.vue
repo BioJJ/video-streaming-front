@@ -56,9 +56,9 @@
 					>
 						<template v-slot:item.actions="{ item }">
 							<table-action
-								@delete="deleteModal(item.columns.name, item.columns.id)"
+								@delete="deleteModal(item.title, item.id)"
 								route="videos"
-								:item="item.columns"
+								:item="item"
 							/>
 						</template>
 					</v-data-table>
@@ -70,69 +70,72 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+	import { defineComponent } from 'vue'
 
-import TableAction from '../../components/TableAction.vue'
-import DeleteModal from '../../components/DeleteModal.vue'
+	import TableAction from '../../components/TableAction.vue'
+	import DeleteModal from '../../components/DeleteModal.vue'
 
-import { VDataTable } from 'vuetify/labs/VDataTable'
-import { useToast } from 'vue-toastification'
+	import { VDataTable } from 'vuetify/labs/VDataTable'
+	import { useToast } from 'vue-toastification'
 
-import Pagination from '../../models/Pagination'
-import { Video } from '../../models/Video'
-import { useVideoStore } from '../../stores/video.store'
-import { User } from '../../models/User'
-import { useAuthStore } from '../../stores/auth.store'
+	import Pagination from '../../models/Pagination'
+	import { Video } from '../../models/Video'
+	import { useVideoStore } from '../../stores/video.store'
+	import { User } from '../../models/User'
+	import { useAuthStore } from '../../stores/auth.store'
 
-export default defineComponent({
-	// eslint-disable-next-line vue/multi-word-component-names
-	name: 'Videos',
-	components: {
-		TableAction,
-		DeleteModal,
-		VDataTable
-	},
-	data() {
-		return {
-			toast: useToast(),
-			store: useVideoStore(),
-			pagination: Pagination.build(),
-			search: '',
-			page: 1,
-			pageCount: 0,
-			itemsPerPage: 10,
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			videos: [] as unknown as Video,
-			headers: [
-				{ title: 'Id', align: 'start', value: 'id', key: 'id' },
-				{ title: 'title', align: 'start', value: 'title', key: 'title' },
-				{ title: 'videoId', align: 'start', value: 'videoId', key: 'videoId' },
-				{ title: 'Actions', key: 'actions', sortable: false }
-			],
-			storeUser: useAuthStore(),
-			user: null as unknown as User
-		}
-	},
-	mounted() {
-		this.user = this.storeUser.getUser
-		this.getVideos()
-	},
-	methods: {
-		async getVideos() {
-			await this.store.fetchAll(this.user.id as number)
-			this.videos = this.store.getVideosList
-			this.itemsPerPage = this.store.getTotalItens
+	export default defineComponent({
+		// eslint-disable-next-line vue/multi-word-component-names
+		name: 'Videos',
+		components: {
+			TableAction,
+			DeleteModal,
+			VDataTable
 		},
-		deleteModal(name: string, id: string) {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			const deleteModal = this.$refs.DeleteModal as any
-			deleteModal.showModal(name, id)
+		data() {
+			return {
+				toast: useToast(),
+				store: useVideoStore(),
+				pagination: Pagination.build(),
+				search: '',
+				page: 1,
+				pageCount: 0,
+				itemsPerPage: 10,
+				videos: [] as unknown as Video,
+				headers: [
+					{ title: 'Id', align: 'start', value: 'id', key: 'id' },
+					{ title: 'title', align: 'start', value: 'title', key: 'title' },
+					{
+						title: 'videoId',
+						align: 'start',
+						value: 'videoId',
+						key: 'videoId'
+					},
+					{ title: 'Actions', key: 'actions', sortable: false }
+				],
+				storeUser: useAuthStore(),
+				user: null as unknown as User
+			}
 		},
-		deleteClient() {
-			this.toast.success('Deleted successfully')
+		mounted() {
+			this.user = this.storeUser.getUser
 			this.getVideos()
 		},
-		performSearch() {}
-	}
-})
+		methods: {
+			async getVideos() {
+				await this.store.fetchAll(this.user.id as number)
+				this.videos = this.store.getVideosList
+				this.itemsPerPage = this.store.getTotalItens
+			},
+			deleteModal(name: string, id: string) {
+				const deleteModal = this.$refs.DeleteModal as any
+				deleteModal.showModal(name, id)
+			},
+			deleteClient() {
+				this.toast.success('Deleted successfully')
+				this.getVideos()
+			},
+			performSearch() {}
+		}
+	})
 </script>

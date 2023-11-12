@@ -5,7 +5,7 @@ import { PandaVideo } from '../models/PandaVideo'
 
 const service = new GenericService<PandaVideo>('panda-video')
 
-export const usePandaVideoStore = defineStore('videos', {
+export const usePandaVideoStore = defineStore('panda-video', {
 	state: () => ({
 		videos: [] as unknown as PandaVideo,
 		totalItens: 0

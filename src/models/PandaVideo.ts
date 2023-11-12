@@ -7,7 +7,6 @@ export class PandaVideo extends EntityBase {
 	user_id?: string
 	folder_id?: string | null
 	library_id?: string
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	config?: Record<string, any>
 	live_id?: boolean
 	video_external_id?: string
