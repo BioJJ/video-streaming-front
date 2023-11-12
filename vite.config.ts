@@ -16,6 +16,9 @@ export default defineConfig({
 		outDir: 'dist',
 		assetsDir: 'assets',
 		manifest: true,
-		minify: 'terser'
+		minify: 'terser',
+		rollupOptions: {
+      external: ['vuetify/labs/VDataTable'],
+    }
 	}
 })
