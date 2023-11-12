@@ -45,26 +45,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+	import { defineComponent, PropType } from 'vue'
 
-export default defineComponent({
-	data: () => ({}),
-	props: {
-		item: {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			type: Object as PropType<{ type: any; required: true }>,
-			required: true
+	export default defineComponent({
+		data: () => ({}),
+		props: {
+			item: {
+				type: Object as PropType<{ type: any; required: true }>,
+				required: true
+			},
+			route: {
+				type: String,
+				required: true
+			}
 		},
-		route: {
-			type: String,
-			required: true
-		}
-	},
 
-	methods: {
-		deleteModal(): void {
-			this.$emit('delete')
+		methods: {
+			deleteModal(): void {
+				this.$emit('delete')
+			}
 		}
-	}
-})
+	})
 </script>
