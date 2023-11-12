@@ -143,41 +143,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { useToast } from 'vue-toastification'
-import { PandaVideo } from '../../models/PandaVideo'
-import { usePandaVideoStore } from '../../stores/panda-video.store'
+	import { defineComponent } from 'vue'
+	import { useToast } from 'vue-toastification'
+	import { PandaVideo } from '../../models/PandaVideo'
+	import { usePandaVideoStore } from '../../stores/panda-video.store'
 
-import Pagination from '../../models/Pagination'
+	import Pagination from '../../models/Pagination'
 
-export default defineComponent({
-	// eslint-disable-next-line vue/multi-word-component-names
-	name: 'Home',
-	data: () => ({
-		toast: useToast(),
-		pandaVideos: [] as unknown as PandaVideo,
-		store: usePandaVideoStore(),
-		pagination: Pagination.build(),
-		model: null
-	}),
-	mounted(): void {
-		this.getVideos()
-	},
-	methods: {
-		async getVideos() {
-			try {
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				await this.store.fetchAll(this.pagination as any)
-
-				this.pandaVideos = this.store.getVideosList
-			} catch (error) {
-				this.toast.error('Not found')
-			}
+	export default defineComponent({
+		name: 'HomeView',
+		data: () => ({
+			toast: useToast(),
+			pandaVideos: [] as unknown as PandaVideo,
+			store: usePandaVideoStore(),
+			pagination: Pagination.build(),
+			model: null
+		}),
+		mounted(): void {
+			this.getVideos()
 		},
-		openProfile() {},
-		openRepo() {}
-	}
-})
-</script>
+		methods: {
+			async getVideos() {
+				try {
+					await this.store.fetchAll(this.pagination as any)
 
-<style></style>
+					this.pandaVideos = this.store.getVideosList
+				} catch (error) {
+					this.toast.error('Not found')
+				}
+			},
+			openProfile() {},
+			openRepo() {}
+		}
+	})
+</script>

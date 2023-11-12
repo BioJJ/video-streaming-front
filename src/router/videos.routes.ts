@@ -9,7 +9,7 @@ const videosRoutes = [
 			title: 'Videos'
 		},
 		component: () =>
-			import(/* webpackChunkName: "home" */ './../views/video/videos.vue')
+			import(/* webpackChunkName: "home" */ './../views/video/Videos.vue')
 	},
 	{
 		path: '/videos/create',
@@ -18,7 +18,7 @@ const videosRoutes = [
 		meta: {
 			title: 'Videos'
 		},
-		component: () => import('../views/video/videosForm.vue')
+		component: () => import('../views/video/VideosForm.vue')
 	},
 	{
 		path: '/videos/edit/:id',
@@ -27,9 +27,8 @@ const videosRoutes = [
 		meta: {
 			title: 'Videos'
 		},
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		props: (route: any) => ({ ...route.params }),
-		component: () => import('../views/video/videosForm.vue')
+		component: () => import('../views/video/VideosForm.vue')
 	},
 	{
 		path: '/videos/view/:id',
@@ -38,9 +37,8 @@ const videosRoutes = [
 		meta: {
 			title: 'Videos'
 		},
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		props: (route: any) => ({ ...route.params }),
-		component: () => import('../views/video/videosView.vue')
+		component: () => import('../views/video/VideosView.vue')
 	}
 ]
 

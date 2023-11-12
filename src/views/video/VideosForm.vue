@@ -74,88 +74,87 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+	import { defineComponent } from 'vue'
 
-import { Validator } from '../../_helpers/validators'
-import { useToast } from 'vue-toastification'
-import { useVideoStore } from '../../stores/video.store'
-import { useAuthStore } from '../../stores/auth.store'
-import { User } from '../../models/User'
-import { Video } from '../../models/Video'
+	import { Validator } from '../../_helpers/validators'
+	import { useToast } from 'vue-toastification'
+	import { useVideoStore } from '../../stores/video.store'
+	import { useAuthStore } from '../../stores/auth.store'
+	import { User } from '../../models/User'
+	import { Video } from '../../models/Video'
 
-export default defineComponent({
-	name: 'VideosForm',
-	data: () => ({
-		formLoading: false,
-		validators: {
-			title: [Validator.required()]
-		},
-		video: null as unknown as Video,
-		form: new Video(),
-		toast: useToast(),
-		store: useVideoStore(),
-		storeUser: useAuthStore(),
-		user: null as unknown as User
-	}),
+	export default defineComponent({
+		name: 'VideosForm',
+		data: () => ({
+			formLoading: false,
+			validators: {
+				title: [Validator.required()]
+			},
+			video: null as unknown as Video,
+			form: new Video(),
+			toast: useToast(),
+			store: useVideoStore(),
+			storeUser: useAuthStore(),
+			user: null as unknown as User
+		}),
 
-	mounted(): void {
-		this.$route.params.id && this.getVideos()
-		this.user = this.storeUser.getUser
-	},
-	methods: {
-		cancel(): void {
-			this.$router.push({ name: 'Videos' })
+		mounted(): void {
+			this.$route.params.id && this.getVideos()
+			this.user = this.storeUser.getUser
 		},
-		async getVideos() {
-			try {
-				this.video = await this.store.fetchById(this.$route.params.id)
-				this.form = this.video
-			} catch (error) {
-				this.toast.error('Not found')
-			}
-		},
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		handleFileUpload(event: any) {
-			const file = event.target.files[0]
-			if (file) {
-				this.form.file = event.target.files[0]
-			}
-		},
-
-		async submitForm(): Promise<void> {
-			this.formLoading = true
-			this.form.user = this.user
-			try {
-				if (this.$route.params.id) {
-					await this.store.fetchUpdate(this.form)
-					this.toast.info('Updated successfully')
-				} else {
-					console.log(this.form)
-					await this.store.fetchSave(this.form)
-					this.toast.success('Saved successfully')
-				}
-				this.formLoading = false
+		methods: {
+			cancel(): void {
 				this.$router.push({ name: 'Videos' })
+			},
+			async getVideos() {
+				try {
+					this.video = await this.store.fetchById(this.$route.params.id)
+					this.form = this.video
+				} catch (error) {
+					this.toast.error('Not found')
+				}
+			},
+			handleFileUpload(event: any) {
+				const file = event.target.files[0]
+				if (file) {
+					this.form.file = event.target.files[0]
+				}
+			},
 
-				this.formLoading = false
-			} catch (error) {
-				this.formLoading = false
-			}
-		},
+			async submitForm(): Promise<void> {
+				this.formLoading = true
+				this.form.user = this.user
+				try {
+					if (this.$route.params.id) {
+						await this.store.fetchUpdate(this.form)
+						this.toast.info('Updated successfully')
+					} else {
+						console.log(this.form)
+						await this.store.fetchSave(this.form)
+						this.toast.success('Saved successfully')
+					}
+					this.formLoading = false
+					this.$router.push({ name: 'Videos' })
 
-		resetForm() {
-			if (this.video) {
-				this.getVideos()
-			} else {
-				this.form = {
-					title: '',
-					status: true,
-					id: undefined
+					this.formLoading = false
+				} catch (error) {
+					this.formLoading = false
+				}
+			},
+
+			resetForm() {
+				if (this.video) {
+					this.getVideos()
+				} else {
+					this.form = {
+						title: '',
+						status: true,
+						id: undefined
+					}
 				}
 			}
 		}
-	}
-})
+	})
 </script>
 
 <style scoped></style>

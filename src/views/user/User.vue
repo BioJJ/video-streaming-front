@@ -62,43 +62,42 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+	import { defineComponent } from 'vue'
 
-import { useToast } from 'vue-toastification'
-import { User } from '../../models/User'
-import { useAuthStore } from '../../stores/auth.store'
-import { useUserStore } from '../../stores/user.store'
+	import { useToast } from 'vue-toastification'
+	import { User } from '../../models/User'
+	import { useAuthStore } from '../../stores/auth.store'
+	import { useUserStore } from '../../stores/user.store'
 
-export default defineComponent({
-	// eslint-disable-next-line vue/multi-word-component-names
-	name: 'User',
-	data: () => ({
-		formLoading: false,
-		user: new User(),
-		toast: useToast(),
-		store: useUserStore(),
-		storeAuth: useAuthStore()
-	}),
-	mounted(): void {
-		this.user = this.storeAuth.getUser
-	},
-	methods: {
-		async submitForm(): Promise<void> {
-			this.formLoading = true
-			try {
-				await this.store.fetchUpdate(this.user)
-				this.toast.info('Updated successfully')
+	export default defineComponent({
+		name: 'UserView',
+		data: () => ({
+			formLoading: false,
+			user: new User(),
+			toast: useToast(),
+			store: useUserStore(),
+			storeAuth: useAuthStore()
+		}),
+		mounted(): void {
+			this.user = this.storeAuth.getUser
+		},
+		methods: {
+			async submitForm(): Promise<void> {
+				this.formLoading = true
+				try {
+					await this.store.fetchUpdate(this.user)
+					this.toast.info('Updated successfully')
 
-				this.formLoading = false
-				this.$router.push({ name: 'User' })
+					this.formLoading = false
+					this.$router.push({ name: 'User' })
 
-				this.formLoading = false
-			} catch (error) {
-				this.formLoading = false
+					this.formLoading = false
+				} catch (error) {
+					this.formLoading = false
+				}
 			}
 		}
-	}
-})
+	})
 </script>
 
 <style></style>
